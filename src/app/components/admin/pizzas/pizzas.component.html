@@ -1,0 +1,79 @@
+<h3>Pizzák kezelése</h3>
+
+<button class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    <i class="bi bi-plus-circle"></i> Új pizza hozzáadása
+</button>
+
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Kép</th>
+            <th>Megnevezés</th>
+            <th>Leírás</th>
+            <th class="text-end">Kalória</th>
+            <th class="text-end">Ár</th>
+            <th class="text-center">Műveletek</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let pizza of pizzas; let i = index;">
+            <td>{{i+1}}</td>
+            <td>{{pizza.image}}</td>
+            <td>{{pizza.name}}</td>
+            <td>{{pizza.description}}</td>
+            <td class="text-end">{{pizza.calory}} kcal</td>
+            <td class="text-end">{{pizza.price}} {{currency}}</td>
+            <td class="text-center">
+                <button class="btn btn-warning btn-sm mx-1"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm"  data-bs-toggle="modal" data-bs-target="#confirmModal"><i class="bi bi-trash3"></i></button>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="7">Összesen <strong>{{pizzas.length}}</strong> pizza</td>
+        </tr>
+    </tfoot>
+</table>
+
+<!-- Új pizza Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Új pizza hozzáadása</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
+                <button type="button" class="btn btn-primary">hozzáadás</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Confirm delete Modal -->
+<div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmModalLabel">Pizza törlése</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            Biztosan törölni szeretnéd?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
+                <button type="button" class="btn btn-danger">Törlés</button>
+            </div>
+        </div>
+    </div>
+</div>
