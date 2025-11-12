@@ -1,0 +1,12 @@
+.thumbnail {
+    width: 180px;
+    padding: 3px;
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid gray;
+    cursor: pointer;
+}
+
+.thumbnail:hover {
+    scale: 1.1;
+}

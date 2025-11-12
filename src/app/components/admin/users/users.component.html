@@ -1,1 +1,85 @@
-<p>users works!</p>
+<h3>Felhasználók kezelése</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Név</th>
+            <th>Email</th>
+            <th>Lakcim</th>
+            <th>Tel.</th>
+            <th>Műveletek</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of users; index as i">
+            <td>{{i+1}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.address}}</td>
+            <td>{{user.phone}}</td>
+            <td>
+                <button type="button" (click)="getUserInfo(user.id)" class="btn btn-info mx-2"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-info-circle"></i></button>
+                <button class="btn btn-danger"><i class="bi bi-ban"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{selectedUser.name}} adatai</h1>
+            </div>
+            <div class="modal-body">
+                <h4>Fiók adatok</h4>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Név:</td>
+                            <td>{{selectedUser.name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>{{selectedUser.email}}</td>
+                        </tr>
+                        <tr *ngIf="selectedUser.address">
+                            <td>Lakcím:</td>
+                            <td>{{selectedUser.address}}</td>
+                        </tr>
+                        <tr *ngIf="selectedUser.phone">
+                            <td>Telefon:</td>
+                            <td>{{selectedUser.phone}}</td>
+                        </tr>
+                        <tr>
+                            <td>ID:</td>
+                            <td>{{selectedUser.id}}</td>
+                        </tr>
+                        <tr *ngIf="selectedUser.reg">
+                            <td>Regisztráció:</td>
+                            <td>{{selectedUser.reg}}</td>
+                        </tr>
+                        <tr *ngIf="selectedUser.last">
+                            <td>Utolsó belépés:</td>
+                            <td>{{selectedUser.last}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Rendelések</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Rendelés placeholder</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="clearSelectedUser()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

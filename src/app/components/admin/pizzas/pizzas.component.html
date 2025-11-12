@@ -17,16 +17,20 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let pizza of pizzas; let i = index;">
+        <tr *ngFor="let pizza of pagedPizzas; let i = index;">
             <td>{{i+1}}</td>
-            <td>{{pizza.image}}</td>
+            <td>
+                <img class="thumbnail" *ngIf="pizza.image" src="http://localhost:3000/uploads/{{pizza.image}}" alt="{{pizza.name}}" (click)="openLightbox(pizza.image)">
+            </td>
             <td>{{pizza.name}}</td>
             <td>{{pizza.description}}</td>
-            <td class="text-end">{{pizza.calory}} kcal</td>
-            <td class="text-end">{{pizza.price}} {{currency}}</td>
+            <td class="text-end">{{pizza.calory | numberFormat}} kcal</td>
+            <td class="text-end">{{pizza.price | numberFormat}} {{currency}}</td>
             <td class="text-center">
-                <button class="btn btn-warning btn-sm mx-1"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-danger btn-sm"  data-bs-toggle="modal" data-bs-target="#confirmModal"><i class="bi bi-trash3"></i></button>
+                <button class="btn btn-warning btn-sm mx-1" (click)="getPizza(pizza.id)"><i
+                        class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" (click)="confirmDelete(pizza.id)"
+                    data-bs-target="#confirmModal"><i class="bi bi-trash3"></i></button>
             </td>
         </tr>
     </tbody>
@@ -37,21 +41,69 @@
     </tfoot>
 </table>
 
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" (click)="setPage(currentPage-1)"
+                [class.disabled]="currentPage == 1">Previous</a></li>
+
+        <li class="page-item" *ngFor="let page of [].constructor(totalPages); index as i">
+            <a class="page-link" (click)="setPage(i+1)" [class.active]="currentPage == i + 1">{{i+1}}</a>
+        </li>
+
+        <li class="page-item"><a class="page-link" (click)="setPage(currentPage+1)"
+                [class.disabled]="currentPage == totalPages">Next</a></li>
+    </ul>
+</nav>
+
 <!-- Új pizza Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Új pizza hozzáadása</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel" *ngIf="!editMode">Új pizza hozzáadása</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel" *ngIf="editMode">Pizza módosítása</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            
+                <div class="form-floating mb-3">
+                    <input type="text" name="name" id="name" placeholder="Név" class="form-control"
+                        [(ngModel)]="newPizza.name">
+                    <label for="name">Név <em>*</em></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" name="cal" id="cal" placeholder="Kalória" class="form-control"
+                        [(ngModel)]="newPizza.calory">
+                    <label for="cal">Kalória <em>*</em></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" name="price" id="price" placeholder="Ár" class="form-control"
+                        [(ngModel)]="newPizza.price">
+                    <label for="price">Ár <em>*</em></label>
+                </div>
+
+                <div class="mb-3" *ngIf="newPizza.image == ''">
+                    <label for="formFile" class="form-label">Kép:</label>
+                    <input class="form-control" type="file" id="formFile" accept="image/*"
+                        (change)="onFileSelected($event)">
+                </div>
+
+                <div class="mb-3" *ngIf="newPizza.image != ''">
+                    <label for="formFile" class="form-label">Kép:</label> <br>
+                    <img *ngIf="newPizza.image" src="http://localhost:3000/uploads/{{newPizza.image}}" alt="" class="thumbnail">
+                    <button *ngIf="newPizza.image" class="btn btn-danger mx-2"
+                        (click)="deleteImage(newPizza.id, newPizza.image)">Törlés</button>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" name="leiras" id="leiras" style="height: 100px;"
+                        [(ngModel)]="newPizza.description"></textarea>
+                    <label for="leiras">Leírás</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
-                <button type="button" class="btn btn-primary">hozzáadás</button>
+                <button type="button" class="btn btn-primary" (click)="save()">Mentés</button>
             </div>
         </div>
     </div>
@@ -68,12 +120,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            Biztosan törölni szeretnéd?
+                Biztosan törölni szeretnéd?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégsem</button>
-                <button type="button" class="btn btn-danger">Törlés</button>
+                <button type="button" class="btn btn-danger" (click)="delete(newPizza.id)">Törlés</button>
             </div>
         </div>
     </div>
 </div>
+
+<app-lightbox [imageUrl]="lightboxImage" [visible]="lightboxVisible" (closed)="lightboxVisible = false"></app-lightbox>

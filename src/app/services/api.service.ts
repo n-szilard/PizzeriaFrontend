@@ -43,6 +43,36 @@ export class ApiService {
     }
   }
 
+  async upload(formData: FormData): Promise<ApiResponse> {
+    try {
+      const response = await axios.post(`${this.SERVER}/upload`, formData);
+      return {
+        status: 200,
+        data: response.data
+      }
+    } catch (error: any) {
+      return {
+        status: 500,
+        message: "Internal Server Error"
+      }
+    }
+  }
+
+  async deleteImage(filename: string): Promise<ApiResponse> {
+    try {
+      const response = await axios.delete(`${this.SERVER}/image/${filename}`);
+      return {
+        status: 200,
+        data: response.data
+      }
+    } catch (error: any) {
+      return {
+        status: 500,
+        message: "Nem sikerült törölni a képet"
+      }
+    }
+  }
+
   // GET all records from table
   async selectAll(table: string): Promise<ApiResponse> {
     try {
