@@ -33,6 +33,8 @@ export class PizzasComponent implements OnInit {
   totalPages = 1;
   pagedPizzas: Pizza[] = [];
   pizzas: Pizza[] = [];
+  startIndex = 1;
+  endIndex = 1;
   
   newPizza: Pizza = {
     id: 0,
@@ -61,6 +63,7 @@ export class PizzasComponent implements OnInit {
     this.api.selectAll('pizzas').then(res => {
       this.pizzas = res.data;
       this.totalPages = Math.ceil(this.pizzas.length / this.pageSize)
+      this.setPage(1);
     })
   }
 

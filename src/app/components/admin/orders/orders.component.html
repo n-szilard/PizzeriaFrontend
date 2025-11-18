@@ -1,1 +1,41 @@
-<p>orders works!</p>
+<h3>Rendelések kezelése</h3>
+
+<!-- Pending rendelések kiirasa, lehessen valtoztatni a statuszon -->
+
+<input type="radio" (click)="filterDisplayedOrders('pending')" class="btn-check" name="options-base" id="pending-radio" autocomplete="off" checked>
+<label class="btn" for="pending-radio">Pending</label>
+
+<input type="radio" (click)="filterDisplayedOrders('preparing')" class="btn-check" name="options-base" id="preparing-radio" autocomplete="off">
+<label class="btn" for="preparing-radio">Preparing</label>
+
+<input type="radio" (click)="filterDisplayedOrders('delivering')" class="btn-check" name="options-base" id="delivering-radio" autocomplete="off">
+<label class="btn" for="delivering-radio">Delivering</label>
+
+<input type="radio" (click)="filterDisplayedOrders('completed')" class="btn-check" name="options-base" id="completed-radio" autocomplete="off">
+<label class="btn" for="completed-radio">Completed</label>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Pizzák</th>
+            <th class="text-end">Összeg</th>
+            <th>Státusz</th>
+            <th>Módosítva</th>
+            <th>Kész</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let order of displayedOrders; index as i">
+            <td>{{i+1}}</td>
+            <td>{{order.name}}</td>
+            <td class="text-end">{{order.total | numberFormat}} Ft</td>
+            <td>{{order.status}}</td>
+            <td>{{order.updated_at}}</td>
+            <td *ngIf="order.status != 'completed'">
+                <button (click)="modifyStatus(order.id)" class="btn btn-success"><i class="bi bi-check"></i></button>
+            </td>
+        </tr>
+    </tbody>
+</table>
