@@ -73,6 +73,23 @@ export class ApiService {
     }
   }
 
+  async sendMail(data: object): Promise<ApiResponse> {
+    try {
+      const response = await axios.post(`${this.SERVER}/sendmail`, data);
+      return {
+        status: 200,
+        message: response.data.message,
+        //data: response.data
+      }
+    }
+    catch (err: any) {
+      return {
+        status: 500,
+        message: err.response.data.error
+      }
+    }
+  }
+
   // GET all records from table
   async selectAll(table: string): Promise<ApiResponse> {
     try {

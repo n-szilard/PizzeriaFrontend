@@ -15,7 +15,7 @@ import { MessageService } from '../../../services/message.service';
 export class RegistrationComponent {
   constructor(private api: ApiService,
     private message: MessageService,
-    private router: Router) {}
+    private router: Router) { }
 
   acceptTerms: boolean = false;
 
@@ -38,6 +38,22 @@ export class RegistrationComponent {
         this.message.show('danger', 'Hiba', res.message);
         return;
       }
+
+      let data = {
+        "template": "registration",
+        "to": this.newUser.email,
+        "subject": "Regisztráció",
+        "data": {
+          "name": this.newUser.name,
+          "url": "localhost",
+          "email": this.newUser.email,
+          "company": "Oláh család pizzéria",
+          "password": this.newUser.password
+        }
+      }
+
+      this.api.sendMail(data);
+
       this.message.show('success', 'Ok', res.message);
       this.newUser = {
         id: 0,
