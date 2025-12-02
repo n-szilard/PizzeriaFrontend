@@ -1,10 +1,13 @@
 export interface Order {
-    id: number;
-    user_id: number;
+    id?: number;
+    userId: number;
     total: number;
     status: string;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
     name?: string;
     quantity?: number; 
+    payment?: string;
+    shipping?:string;
+    comment?: string;
 }

@@ -1,1 +1,65 @@
-<p>cart works!</p>
+<h3>Kosár tartalma</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Pizza megnevezése</th>
+            <th class="text-end">Egységár</th>
+            <th class="text-end">Mennyiség</th>
+            <th class="text-end">Összesen</th>
+            <th class="text-end">Műveletek</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of items; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{ item.pizzaName }}</td>
+            <td class="text-end">{{ item.price | numberFormat }} Ft</td>
+            <td class="text-end d-flex justify-content-end">
+                <input type="number" class="form-control w-50" min="1" [(ngModel)]="item.amount">
+            </td>
+            <td class="text-end">{{ item.total | numberFormat}} Ft</td>
+            <td class="d-flex justify-content-end gap-2">
+                <button class="btn btn-warning" (click)="update(item)"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-danger" (click)="remove(item.id)"><i class="bi bi-trash"></i></button>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr class="fs-4">
+            <td colspan="4" class="text-end">Összesen:</td>
+            <td class="text-end"><strong>{{allTotal | numberFormat}}</strong> Ft</td>
+            <td class="text-end"><button class="btn btn-danger" (click)="removeAll()" [disabled]="items.length == 0">Kosár ürítése</button></td>
+        </tr>
+    </tfoot>
+</table>
+
+
+<div class="col-lg-6 offset-lg-3">
+    <h3>Rendelés leadása</h3>
+    <div class="form-floating mb-3">
+        <select class="form-select" id="floatingSelect" [disabled]="items.length == 0" [(ngModel)]="newOrder.shipping">
+            <option selected>Válasszon...</option>
+            <option value="Kiszállítás">Kiszállítás</option>
+            <option value="Érte jön">Elmegyek érte</option>
+        </select>
+        <label for="floatingSelect">Szállítási mód</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <select class="form-select" id="floatingSelect" [disabled]="items.length == 0" [(ngModel)]="newOrder.payment">
+            <option selected>Válasszon...</option>
+            <option value="Átutalás">Átutalás</option>
+            <option value="Bankkártya">Bankkártya</option>
+            <option value="Készpénz">Készpénz</option>
+        </select>
+        <label for="floatingSelect">Fizetési mód</label>
+    </div>
+
+    <div class="form-floating mb-3">
+        <textarea class="form-control" placeholder="" id="floatingTextarea" [(ngModel)]="newOrder.comment" [disabled]="items.length == 0"></textarea>
+        <label for="floatingTextarea">Rendelési megjegyzés</label>
+    </div>
+
+    <button class="btn btn-primary btn-lg" [disabled]="items.length == 0" (click)="sendOrder()"><i class="bi bi-send"></i> Rendelés</button>
+</div>

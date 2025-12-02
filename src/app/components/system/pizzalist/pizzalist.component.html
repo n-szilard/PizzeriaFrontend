@@ -1,1 +1,57 @@
 <h3>Pizza lista</h3>
+
+<div *ngIf="!isLoggedIn">
+    A rendeléshez <a href="/login">jelentkezz be</a>! Ha még nincs fiókod, akkor <a
+        href="/registration">regisztrálj</a>!
+</div>
+
+<div class="mb-3 text-end d-flex gap-4 justify-content-end">
+    <input type="text" class="form-control w-50" placeholder="Keresés..." [(ngModel)]="searchTerm">
+    <button class="btn btn-primary btn-lg" (click)="filterPizzas()"><i class="bi bi-search"></i></button>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Kép</th>
+            <th>Megnevezés</th>
+            <th>Leírás</th>
+            <th class="text-end">Kalória</th>
+            <th class="text-end">Ár</th>
+            <th class="text-end" *ngIf="isLoggedIn">Kosárba</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let pizza of filteredPizzzas; let i = index;">
+            <td>{{i+1}}</td>
+            <td *ngIf="pizza.image">
+                <img class="thumbnail" src="http://localhost:3000/uploads/{{pizza.image}}" alt="{{pizza.name}}">
+            </td>
+
+            <td *ngIf="!pizza.image">
+                <img class="thumbnail" src="http://localhost:3000/uploads/no-image.jpg" alt="{{pizza.name}}">
+            </td>
+            <td valign="middle">{{pizza.name}}</td>
+            <td>{{pizza.description}}</td>
+            <td>{{pizza.calory | numberFormat}} kcal</td>
+            <td class="fw-bold">{{pizza.price | numberFormat}} {{currency}}</td>
+            <td *ngIf="isLoggedIn" class="text-end toCart">
+                <div class="d-flex flex-row justify-content-end gap-2">
+                    <input type="number" class="form-control" [(ngModel)]="pizza.amount" name="{{pizza.id}}" id="amount"
+                        placeholder="" value="0" min="0">
+                    <button class="btn btn-success" (click)="addToCart(pizza.id)"><i
+                            class="bi bi-cart-plus"></i></button>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="6" *ngIf="!isLoggedIn" class="text-center">Összesen <span>{{pizzas.length}}</span> pizza.
+            </td>
+            <td colspan="7" *ngIf="isLoggedIn" class="text-center">Összesen <span>{{pizzas.length}}</span> pizza.
+            </td>
+        </tr>
+    </tfoot>
+</table>

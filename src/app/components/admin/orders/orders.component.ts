@@ -59,7 +59,7 @@ export class OrdersComponent implements OnInit{
 
     const timeStamp = this.getMySQLDateTime();
 
-    await this.api.update('orders', id, {status: newStatus, updated_at: timeStamp});
+    await this.api.update('orders', id, {status: newStatus, updatedAt: timeStamp});
 
     await this.getAllOrders(false);
     this.filterDisplayedOrders(oldStatus);

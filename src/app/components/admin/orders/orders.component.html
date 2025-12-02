@@ -32,9 +32,9 @@
             <td>{{order.name}}</td>
             <td class="text-end">{{order.total | numberFormat}} Ft</td>
             <td>{{order.status}}</td>
-            <td>{{order.updated_at}}</td>
+            <td>{{order.updatedAt}}</td>
             <td *ngIf="order.status != 'completed'">
-                <button (click)="modifyStatus(order.id)" class="btn btn-success"><i class="bi bi-check"></i></button>
+                <button (click)="modifyStatus(order.id!)" class="btn btn-success"><i class="bi bi-check"></i></button>
             </td>
         </tr>
     </tbody>
